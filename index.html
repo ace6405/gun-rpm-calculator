@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gun RPM Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+        }
+        button {
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gun RPM Calculator</h1>
+        <label for="reloadSpeed">Reload Speed (seconds):</label>
+        <input type="number" id="reloadSpeed" step="0.01" required>
+
+        <label for="ammoCapacity">Ammo Capacity (rounds):</label>
+        <input type="number" id="ammoCapacity" required>
+
+        <label for="timePerRound">Time to Fire One Round (seconds):</label>
+        <input type="number" id="timePerRound" step="0.01" required>
+
+        <button onclick="calculateRPM()">Calculate RPM</button>
+
+        <div class="result" id="rpmResult"></div>
+    </div>
+
+    <script>
+        function calculateRPM() {
+            // Get user inputs
+            const reloadSpeed = parseFloat(document.getElementById('reloadSpeed').value);
+            const ammoCapacity = parseInt(document.getElementById('ammoCapacity').value);
+            const timePerRound = parseFloat(document.getElementById('timePerRound').value);
+
+            // Check for valid inputs
+            if (isNaN(reloadSpeed) || isNaN(ammoCapacity) || isNaN(timePerRound) || reloadSpeed < 0 || ammoCapacity <= 0 || timePerRound <= 0) {
+                document.getElementById('rpmResult').innerText = 'Please enter valid positive numbers for all fields.';
+                return;
+            }
+
+            // Calculate the time to fire all rounds
+            const timeToFireFullMagazine = timePerRound * ammoCapacity;
+
+            // Calculate the total cycle time
+            const totalCycleTime = timeToFireFullMagazine + reloadSpeed;
+
+            // Calculate the RPM
+            const rpm = (60 / totalCycleTime) * ammoCapacity;
+
+            // Display the result
+            document.getElementById('rpmResult').innerText = `RPM: ${rpm.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
